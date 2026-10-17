@@ -236,9 +236,21 @@
   <div id="welcome-overlay" class="welcome-overlay">
     <div class="welcome-card">
       <div class="logo">🎓</div>
-      <h1>Bienvenido a Studia</h1>
-      <p>Para comenzar a estudiar, vincula la carpeta raíz de este proyecto. Studia leerá tus fuentes en PDF, gestionará las transcripciones a Markdown y almacenará tus tests de forma local.</p>
-      <button class="btn-accent btn-large btn-open-project">📂 Abrir carpeta del proyecto</button>
+      <h1 id="welcome-title">Bienvenido a Studia</h1>
+      <p id="welcome-desc">Para comenzar a estudiar, vincula la carpeta raíz de este proyecto. Studia leerá tus fuentes en PDF, gestionará las transcripciones a Markdown y almacenará tus tests de forma local.</p>
+      
+      <!-- Si ya existe una carpeta previa guardada -->
+      <div id="welcome-resume-container" class="hidden" style="display: flex; flex-direction: column; gap: 10px;">
+        <button id="btn-resume-project" class="btn-accent btn-large" style="width: 100%;">
+          📂 Reanudar <span id="resume-folder-name" style="font-weight: 700; margin-left: 4px;"></span>
+        </button>
+        <button class="btn-text btn-open-project" style="font-size: 13px; color: var(--text-muted); cursor: pointer;">o elegir otra carpeta del disco...</button>
+      </div>
+
+      <!-- Si es la primera vez que se entra sin carpeta previa -->
+      <div id="welcome-initial-container">
+        <button class="btn-accent btn-large btn-open-project" style="width: 100%;">📂 Abrir carpeta del proyecto</button>
+      </div>
     </div>
   </div>
 

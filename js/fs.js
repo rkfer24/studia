@@ -82,23 +82,54 @@
       }
       const handle = await window.showDirectoryPicker({ mode: 'readwrite' });
       this.rootHandle = handle;
+      localStorage.setItem('studia_last_folder_name', handle.name);
       await this.storeHandle(handle);
       await this.ensureProjectStructure();
       return handle;
     }
 
-    async restoreSession() {
+    async checkStoredSession() {
       const storedHandle = await this.getStoredHandle();
-      if (!storedHandle) return null;
+      if (!storedHandle) return { status: 'none' };
+
+      const folderName = storedHandle.name || localStorage.getItem('studia_last_folder_name') || 'Studia';
       try {
-        const hasPermission = await this.verifyPermission(storedHandle, true);
-        if (hasPermission) {
+        const perm = await storedHandle.queryPermission({ mode: 'readwrite' });
+        if (perm === 'granted') {
           this.rootHandle = storedHandle;
+          localStorage.setItem('studia_last_folder_name', folderName);
           await this.ensureProjectStructure();
-          return storedHandle;
+          return { status: 'granted', handle: storedHandle, name: folderName };
+        }
+        return { status: 'needs_permission', handle: storedHandle, name: folderName };
+      } catch (err) {
+        console.warn('Error consultando permisos del handle previo:', err);
+        return { status: 'needs_permission', handle: storedHandle, name: folderName };
+      }
+    }
+
+    async resumeStoredSession() {
+      const storedHandle = await this.getStoredHandle();
+      if (!storedHandle) return false;
+
+      try {
+        const perm = await storedHandle.requestPermission({ mode: 'readwrite' });
+        if (perm === 'granted') {
+          this.rootHandle = storedHandle;
+          localStorage.setItem('studia_last_folder_name', storedHandle.name);
+          await this.ensureProjectStructure();
+          return true;
         }
       } catch (err) {
-        console.warn('No se pudo restaurar el permiso previo:', err);
+        console.error('Error al reanudar permisos:', err);
+      }
+      return false;
+    }
+
+    async restoreSession() {
+      const res = await this.checkStoredSession();
+      if (res.status === 'granted') {
+        return this.rootHandle;
       }
       return null;
     }
