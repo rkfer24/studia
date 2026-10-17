@@ -104,8 +104,9 @@ REGLAS ESTRICTAS:
 1. Cada pregunta DEBE tener exactamente 4 opciones en el arreglo "options".
 2. "correctIndex" DEBE ser un número entero entre 0 y 3 que apunte a la opción correcta.
 3. "ref" DEBE contener el archivo y la página de donde se extrae la pregunta con la sintaxis: "ruta/archivo.pdf#N".
-4. "explanation" DEBE justificar pedagógicamente la opción acertada.
-5. "topic" debe indicar el tema o título del capítulo evaluado.`;
+4. "quote" DEBE contener la frase textual exacta y más relevante del documento original donde se fundamenta la respuesta correcta.
+5. "explanation" DEBE justificar pedagógicamente la opción acertada.
+6. "topic" debe indicar el tema o título del capítulo evaluado.`;
 
         const testSchema = {
           type: "OBJECT",
@@ -126,9 +127,10 @@ REGLAS ESTRICTAS:
                   correctIndex: { type: "INTEGER" },
                   explanation: { type: "STRING" },
                   ref: { type: "STRING" },
+                  quote: { type: "STRING" },
                   topic: { type: "STRING" }
                 },
-                required: ["id", "question", "options", "correctIndex", "explanation", "ref"]
+                required: ["id", "question", "options", "correctIndex", "explanation", "ref", "quote"]
               }
             }
           },
@@ -277,6 +279,7 @@ REGLAS ESTRICTAS:
           correct: q.correctIndex,
           isCorrect,
           ref: q.ref,
+          quote: q.quote || '',
           topic: q.topic || 'General'
         });
 
@@ -298,9 +301,14 @@ REGLAS ESTRICTAS:
             <div class="feedback-explanation">
               <b>Explicación:</b> ${q.explanation || ''}
             </div>
+            ${q.quote ? `
+              <div class="feedback-quote" style="font-size: 12.5px; color: #cbd5e1; font-style: italic; background: rgba(0,0,0,0.2); padding: 4px 8px; border-left: 2px solid var(--accent-primary); border-radius: 4px; margin-top: 4px;">
+                <b>Cita clave:</b> «${q.quote}»
+              </div>
+            ` : ''}
             ${q.ref ? `
-              <div class="feedback-ref">
-                <button type="button" class="ref-chip" data-file="${refFile}" data-page="${refPage}" title="Ver en el PDF original">
+              <div class="feedback-ref" style="margin-top: 6px;">
+                <button type="button" class="ref-chip" data-file="${refFile}" data-page="${refPage}" data-quote="${encodeURIComponent(q.quote || '')}" title="Ver en el documento original con contexto">
                   <span class="chip-icon">📄</span>
                   <span class="chip-name">${refFile.split('/').pop()}</span>
                   <span class="chip-page">p. ${refPage}</span>
@@ -482,7 +490,7 @@ REGLAS ESTRICTAS:
         (att.responses || []).forEach(r => {
           if (!r.isCorrect) {
             const qKey = r.questionText || r.questionId;
-            failuresByQuestion[qKey] = failuresByQuestion[qKey] || { count: 0, text: qKey, ref: r.ref };
+            failuresByQuestion[qKey] = failuresByQuestion[qKey] || { count: 0, text: qKey, ref: r.ref, quote: r.quote || '' };
             failuresByQuestion[qKey].count++;
 
             const topic = r.topic || 'General';
@@ -532,11 +540,18 @@ REGLAS ESTRICTAS:
               ${topFailedQuestions.map(item => `
                 <div class="failed-q-item">
                   <div class="failed-q-text">"${item.text}"</div>
+                  ${item.quote ? `
+                    <div style="font-size: 11.5px; color: #cbd5e1; font-style: italic; margin-bottom: 6px; border-left: 2px solid var(--accent-primary); padding-left: 6px;">
+                      «${item.quote}»
+                    </div>
+                  ` : ''}
                   <div class="failed-q-meta">
                     <span class="fail-count">❌ ${item.count} vez/veces fallada</span>
                     ${item.ref ? `
-                      <button class="ref-chip" data-file="${item.ref.split('#')[0]}" data-page="${item.ref.split('#')[1] || 1}">
-                        📄 ${item.ref.split('#')[0].split('/').pop()} p.${item.ref.split('#')[1] || 1}
+                      <button type="button" class="ref-chip" data-file="${item.ref.split('#')[0]}" data-page="${item.ref.split('#')[1] || 1}" data-quote="${encodeURIComponent(item.quote || '')}" title="Ver en el documento original con contexto">
+                        <span class="chip-icon">📄</span>
+                        <span class="chip-name">${item.ref.split('#')[0].split('/').pop()}</span>
+                        <span class="chip-page">p. ${item.ref.split('#')[1] || 1}</span>
                       </button>
                     ` : ''}
                   </div>

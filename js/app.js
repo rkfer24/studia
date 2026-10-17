@@ -21,6 +21,7 @@
       this.setupAgentEditor();
       this.setupProjectPicker();
       this.setupLayoutControls();
+      this.setupGlobalCitationHandlers();
 
       // 3. Check folder from previous session
       try {
@@ -272,6 +273,21 @@
           rightPanel.classList.toggle('collapsed');
         });
       }
+    }
+
+    setupGlobalCitationHandlers() {
+      document.addEventListener('click', (e) => {
+        const chip = e.target.closest('.ref-chip');
+        if (chip) {
+          e.preventDefault();
+          e.stopPropagation();
+          const file = chip.getAttribute('data-file');
+          const page = parseInt(chip.getAttribute('data-page') || '1', 10);
+          const rawQuote = chip.getAttribute('data-quote');
+          const quote = rawQuote ? decodeURIComponent(rawQuote) : '';
+          window.Studia.viewer.openPdf(file, page, quote);
+        }
+      });
     }
 
     showToast(message, type = 'info') {

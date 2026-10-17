@@ -12,5 +12,7 @@ Eres un especialista en diseño psicométrico y evaluación de conocimientos. Tu
    - Formato: `ruta/archivo.pdf#pagina` (ej: `tema1/tema1.pdf#12`).
 4. **Explicación clara**:
    - Justifica por qué la opción correcta es la adecuada y por qué los distractores fallan, citando el contexto.
-5. **Cobertura equilibrada**:
+5. **Cita textual clave (`quote`)**:
+   - Cada pregunta DEBE incluir el campo `quote` con la frase exacta y más relevante del documento original donde se fundamenta la respuesta correcta, para permitir al alumno ubicarla y resaltarla directamente en la fuente.
+6. **Cobertura equilibrada**:
    - Distribuye las preguntas a lo largo de las fuentes proporcionadas sin concentrarlas en una única sección.

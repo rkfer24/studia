@@ -215,16 +215,29 @@
     </div>
   </div>
 
-  <!-- Modal: Visor de PDF y Markdown -->
+  <!-- Modal: Visor de PDF y Markdown con Resaltado de Cita Clave -->
   <div id="viewer-modal" class="modal-backdrop pdf-viewer-modal hidden">
     <div class="modal-window modal-window-full">
       <div class="modal-header">
         <h3 id="viewer-title">Visor de Documento</h3>
-        <div style="display: flex; gap: 8px;">
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <button id="viewer-toggle-mode-btn" class="btn-secondary btn-sm" title="Alternar entre PDF original y texto Markdown">📝 Ver texto resaltado</button>
           <button id="viewer-open-external" class="btn-secondary btn-sm" title="Abrir en pestaña nueva">↗ Abrir en pestaña</button>
           <button id="viewer-close-btn" class="btn-icon" title="Cerrar visor">✕</button>
         </div>
       </div>
+
+      <!-- Banner de Contexto y Frase Clave de la Fuente -->
+      <div id="viewer-context-banner" class="viewer-context-banner hidden">
+        <div class="context-banner-info">
+          <span class="context-pin">📌</span>
+          <div class="context-text-wrapper">
+            <span class="context-label">Frase relevante en la fuente (Página <span id="viewer-context-page">1</span>):</span>
+            <div id="viewer-context-quote" class="context-quote-text"></div>
+          </div>
+        </div>
+      </div>
+
       <div class="modal-body">
         <iframe id="viewer-iframe" class="viewer-frame" src="about:blank"></iframe>
         <div id="viewer-md-content" class="viewer-md-pane hidden"></div>
