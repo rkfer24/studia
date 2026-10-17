@@ -1,0 +1,12 @@
+# Ignorar archivos del sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Fuentes en PDF (no versionar binarios pesados en git)
+fuentes/**/*.pdf
+fuentes/*.pdf
+
+# Archivos temporales o de entorno
+.env
+.env.local
