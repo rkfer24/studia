@@ -97,7 +97,7 @@
       if (saveBtn) {
         saveBtn.addEventListener('click', () => {
           const key = apiKeyInput ? apiKeyInput.value.trim() : '';
-          const model = modelSelect ? modelSelect.value : 'gemini-2.5-flash';
+          const model = modelSelect ? modelSelect.value : 'gemini-3.8-flash';
 
           window.Studia.gemini.setApiKey(key);
           window.Studia.gemini.setModel(model);
@@ -110,7 +110,7 @@
       if (testKeyBtn) {
         testKeyBtn.addEventListener('click', async () => {
           const key = apiKeyInput ? apiKeyInput.value.trim() : '';
-          const model = modelSelect ? modelSelect.value : 'gemini-2.5-flash';
+          const model = modelSelect ? modelSelect.value : 'gemini-3.8-flash';
           window.Studia.gemini.setApiKey(key);
           window.Studia.gemini.setModel(model);
 

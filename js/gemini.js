@@ -6,12 +6,17 @@
 
   const STORAGE_KEY_API = 'studia_gemini_api_key';
   const STORAGE_KEY_MODEL = 'studia_gemini_model';
-  const DEFAULT_MODEL = 'gemini-2.5-flash';
+  const DEFAULT_MODEL = 'gemini-3.8-flash';
 
   class StudiaGemini {
     constructor() {
       this.apiKey = localStorage.getItem(STORAGE_KEY_API) || '';
-      this.model = localStorage.getItem(STORAGE_KEY_MODEL) || DEFAULT_MODEL;
+      let savedModel = localStorage.getItem(STORAGE_KEY_MODEL);
+      if (!savedModel || savedModel === 'gemini-2.5-flash' || savedModel === 'gemini-1.5-flash') {
+        savedModel = DEFAULT_MODEL;
+        localStorage.setItem(STORAGE_KEY_MODEL, savedModel);
+      }
+      this.model = savedModel;
     }
 
     getApiKey() {
