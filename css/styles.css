@@ -314,6 +314,9 @@ button {
   font-size: 10px;
   color: var(--text-faint);
   width: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .folder-icon {
   font-size: 14px;
@@ -321,6 +324,58 @@ button {
 .folder-name {
   font-weight: 600;
   color: #cbd5e1;
+}
+
+.folder-checkbox {
+  accent-color: var(--accent-primary);
+  cursor: pointer;
+  width: 14px;
+  height: 14px;
+  margin-right: 2px;
+}
+
+.folder-badge {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  margin-left: 4px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.folder-badge.badge-ready {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.folder-badge.badge-pending {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.folder-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+  opacity: 0.6;
+}
+.tree-folder:hover .folder-actions {
+  opacity: 1;
+}
+
+.badge-untranscribed {
+  font-size: 9.5px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-faint);
+  margin-left: 6px;
+  font-weight: 600;
+}
+
+.file-label.file-pending {
+  cursor: default;
 }
 
 .tree-children.collapsed {
